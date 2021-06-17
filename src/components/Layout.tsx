@@ -15,7 +15,7 @@ import { useAuthed } from '../libs/hook';
 import Cookies from 'js-cookie';
 
 import Main from './Main';
-import User from './User';
+import Album from './Album';
 
 function LoginMenu({ props }) {
   const [isAuthed, setIsAuthed] = useState(useAuthed());
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Album(props) {
+export default function Layout(props) {
   const classes = useStyles();
 
   return (
@@ -102,7 +102,7 @@ export default function Album(props) {
       </AppBar>
       <main>
         <Route path="/" exact component={Main} />
-        <AuthedRoute path="/user" component={User} />
+        <AuthedRoute path="/album" component={Album} />
       </main>
       {/* Footer */}
       <footer className={classes.footer}>
