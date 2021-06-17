@@ -1,26 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
-import Main from './components/Main';
+import Home from './components/Layout';
 import SignUp from './components/Signup';
 import SignIn from './components/Signin';
-import User from './components/User';
 import { useAuthed } from './libs/hook';
-
-const AuthedRoute = ({ component: Component, ...rest }) => {
-  const isAuthed = useAuthed();
-  return (
-    <Route
-      render={props => {
-        if (isAuthed) {
-          return <Component {...rest} {...props} />;
-        } else {
-          return <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />;
-        }
-      }}
-    />
-  );
-};
 
 const UnAuthedRoute = ({ component: Component, ...rest }) => {
   const isAuthed = useAuthed();
@@ -50,8 +34,7 @@ const App = () => {
       <Switch>
         <UnAuthedRoute path="/signup" component={SignUp} />
         <UnAuthedRoute path="/signin" component={SignIn} />
-        <AuthedRoute path="/user" component={User} />
-        <Route path="/" component={Main} />
+        <Route path="/" component={Home} />
       </Switch>
     </Router>
   );
