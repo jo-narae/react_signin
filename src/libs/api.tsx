@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-export const signUp = async ({ email, password1: password, nickname }, props) => {
+export const signUp = async ({ email, password, nickname }, props) => {
   await axios.post('http://localhost:4000/auth/join', {
     email,
     password,

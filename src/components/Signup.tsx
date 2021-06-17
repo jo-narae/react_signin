@@ -1,96 +1,171 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
 import { signUp } from '../libs/api';
 
-class SignUp extends React.Component<{ history: any }, { email: string, password1: string, password2: string, nickname: string }> {
-
-  constructor(props){
-    super(props);
-    this.state = {
-      email: '',
-      password1: '',
-      password2: '',
-      nickname: ''
-    };
-  }
-
-  setEmail = (e) => {
-    this.setState({ ...this.state, email: e.target.value});
-  }
-
-  setPassword = (e) => {
-    this.setState({ ...this.state, password1: e.target.value});
-  }
-
-  setRePassword = (e) => {
-    this.setState({ ...this.state, password2: e.target.value});
-  }
-
-  setNickname = (e) => {
-    this.setState({...this.state, nickname: e.target.value});
-  }
-
-  onSubmit = async (e) => {
-    e.preventDefault();
-    await signUp(this.state, this.props);
-  }
-  
-  render(){
-    return (
-      <form onSubmit={this.onSubmit}>
-        <fieldset>
-          <legend>회원가입</legend>
-          <div className="col">
-            <label htmlFor="email">이메일</label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              value={this.state.email}
-              placeholder="이메일을 입력해주세요"
-              onChange={this.setEmail}
-            />
-          </div>
-          <div className="col">
-            <label htmlFor="password1">비밀번호</label>
-            <input
-              type="password"
-              id="password1"
-              name="password1"
-              value={this.state.password1}
-              placeholder="비밀번호를 입력해주세요"
-              onChange={this.setPassword}
-            />
-          </div>
-          <div className="col">
-            <label htmlFor="password2">비밀번호 확인</label>
-            <input
-              type="password"
-              name="password2"
-              id="password2"
-              value={this.state.password2}
-              placeholder="비밀번호를 입력해주세요"
-              onChange={this.setRePassword}
-            />
-          </div>
-          <div className="col">
-            <label htmlFor="nickname">닉네임</label>
-            <input
-              type="nickname"
-              name="nickname"
-              id="nickname"
-              value={this.state.nickname}
-              placeholder="닉네임을 입력해주세요"
-              onChange={this.setNickname}
-            />
-          </div>
-        </fieldset>
-        <button type="submit" className="submit-btn">
-          확인
-        </button>
-      </form>
-    );
-  }
-  
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
 
-export default SignUp;
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+export default function SignUp(props) {
+  const classes = useStyles();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repassword, setRePassword] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [agree, setAgree] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!agree) {
+      alert('가입 동의를 체크해주세요');
+      return;
+    }
+    await signUp({ email, password, nickname }, props);
+  }
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <form className={classes.form} noValidate>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="repassword"
+                label="Re Password"
+                type="password"
+                id="repassword"
+                autoComplete="current-password"
+                value={repassword}
+                onChange={e => setRePassword(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="nickname"
+                label="nickname"
+                type="text"
+                id="nickname"
+                value={nickname}
+                onChange={e => setNickname(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox color="primary" 
+                    value={agree}
+                    onChange={() => setAgree(!agree)}
+                  />
+                }
+                label="I agree to sign up."
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={e => onSubmit(e)}
+          >
+            Sign Up
+          </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <Link href="/signin" variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Box mt={5}>
+        <Copyright />
+      </Box>
+    </Container>
+  );
+}
