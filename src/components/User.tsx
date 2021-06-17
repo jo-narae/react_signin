@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import jwt from 'jsonwebtoken';
 
 const LoginMenu = props => {
-  const session = Cookies.get('session');
   const [userName, setUserName] = useState('');
-  const key = process.env.REACT_APP_JWT_KEY;
 
   useEffect(() => {
+    const session = Cookies.get('session');
+    const key = process.env.REACT_APP_JWT_KEY;
     const decoded = jwt.verify(session, key);
-    console.log(decoded);
     setUserName(decoded.userName);
   }, []);
 
