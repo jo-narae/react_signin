@@ -19,7 +19,7 @@ export const signIn = async ({ email, password }, props) => {
   })
   .then(async ({ data }) => {
     await Cookies.set('session', data);
-    props.history.push('/user');
+    props.history.push('/');
   })
   .catch(() => alert('존재하지 않는 아이디거나 비밀번호가 틀렸습니다.\n입력정보를 올바르게 입력해주세요.'));
 };

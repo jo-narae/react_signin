@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import jwt from 'jsonwebtoken';
 
-const User = props => {
+const LoginMenu = props => {
   const session = Cookies.get('session');
   const [userName, setUserName] = useState('');
   const key = process.env.REACT_APP_JWT_KEY;
@@ -31,4 +31,4 @@ const User = props => {
   );
 };
 
-export default User;
+export default LoginMenu;
