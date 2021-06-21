@@ -12,7 +12,6 @@ export const signUp = async ({ email, password, nickname }, props) => {
 };
 
 export const signIn = async ({ email, password }, props) => {
-  console.log({ email, password });
   await axios.post('http://localhost:4000/auth/login', {
     email,
     password,

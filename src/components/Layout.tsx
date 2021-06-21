@@ -44,7 +44,7 @@ const AuthedRoute = ({ component: Component, ...rest }) => {
   return (
     <Route exact
       render={props => {
-        if (isAuthed) {
+        if (isAuthed || props.location.pathname === '/') {
           return <Component {...rest} {...props} />;
         } else {
           return <Redirect to={{ pathname: '/signin', state: { from: props.location } }} />;
