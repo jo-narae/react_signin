@@ -13,8 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import KaKaoLogin from 'react-kakao-login';
 
-import { signIn } from '../libs/api';
+import { signIn, validSignInKakao, signInWithKakao } from '../libs/api';
+import ColorButton from './ColorButton';
 
 function Copyright() {
   return (
@@ -116,6 +118,27 @@ export default function SignIn(props) {
               <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
+            </Grid>
+            <Grid item xs={12}>
+              <KaKaoLogin
+                token='4d4307a258771c101239b4f3da13ecc2' //js key 값
+                onSuccess={async (result) => {
+                    await validSignInKakao({ socialId: result.profile.id })
+                    .then(async res => {
+                      if (!res.data) {
+                        await signInWithKakao({ nickname: result.profile.properties.nickname, socialId: result.profile.id }, props)
+                      }
+                    })
+                    .catch(() => alert('소셜 로그인에 실패했습니다.'));
+                  }
+                }
+                onFail={result => alert('카카오 로그인이 정상적으로 이루어지지 않았습니다 다시 시도해주세요.')}
+                render={(props: any) => (
+                  <>
+                  <ColorButton mt={8} socialLogin={props.onClick} />
+                </>
+                )}
+              />
             </Grid>
           </Grid>
         </form>

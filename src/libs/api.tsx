@@ -8,7 +8,7 @@ export const signUp = async ({ email, password, nickname }, props) => {
     nickname,
   })
   .then(() => props.history.push('/signin'))
-  .catch(() => alert('이메일 혹은 닉네임이 중복됩니다. 다시 확인해주세요.'));
+  .catch(() => alert('이메일이 중복됩니다. 다시 확인해주세요.'));
 };
 
 export const signIn = async ({ email, password }, props) => {
@@ -21,4 +21,21 @@ export const signIn = async ({ email, password }, props) => {
     props.history.push('/');
   })
   .catch(() => alert('존재하지 않는 아이디거나 비밀번호가 틀렸습니다.\n입력정보를 올바르게 입력해주세요.'));
+};
+
+export const validSignInKakao = async ({ socialId }) => {
+  return await axios.get('http://localhost:4000/auth/social/valid', {
+    params: {
+      socialId
+    }
+  });
+};
+
+export const signInWithKakao = async ({ socialId, nickname }, props) => {
+  await axios.post('http://localhost:4000/auth/join', {
+    socialId,
+    nickname,
+  })
+  .then(() => props.history.push('/'))
+  .catch(() => alert('이미 가입되어 있습니다.'));
 };
