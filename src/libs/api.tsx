@@ -23,19 +23,14 @@ export const signIn = async ({ email, password }, props) => {
   .catch(() => alert('존재하지 않는 아이디거나 비밀번호가 틀렸습니다.\n입력정보를 올바르게 입력해주세요.'));
 };
 
-export const validSignInKakao = async ({ socialId }) => {
-  return await axios.get('http://localhost:4000/auth/social/valid', {
-    params: {
-      socialId
-    }
-  });
-};
-
-export const signInWithKakao = async ({ socialId, nickname }, props) => {
-  await axios.post('http://localhost:4000/auth/join', {
+export const signInAndSignUpWithKakao = async ({ socialId, nickname }, props) => {
+  await axios.post('http://localhost:4000/auth/kakao/login', {
     socialId,
-    nickname,
+    nickname
   })
-  .then(() => props.history.push('/'))
-  .catch(() => alert('이미 가입되어 있습니다.'));
+  .then(async ({ data }) => {
+    await Cookies.set('session', data);
+    props.history.push('/');
+  })
+  .catch(() => alert('소셜 로그인에 실패했습니다.'));
 };
